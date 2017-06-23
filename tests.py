@@ -39,6 +39,15 @@ class TestParser(TestCase):
             parse("foo=\"bar\nbaz\nfoobar\"")
         )
 
+    def test_equal_char(self):
+        self.assertEqual({"foo": "="}, parse("foo=="))
+
+    def test_equal_char_in_quote(self):
+        self.assertEqual({"foo": "="}, parse("foo=\"=\""))
+
+    def test_white_not_trim_in_quoted(self):
+        self.assertEqual({"foo": "\nbar\n"}, parse('foo="\nbar\n"'))
+
 
 class TestBuilder(TestCase):
     def test_empty(self):

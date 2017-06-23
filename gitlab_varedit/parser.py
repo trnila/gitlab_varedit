@@ -16,7 +16,7 @@ def parse(text):
     do_append = False
 
     def append():
-        result[key.strip()] = value.strip().strip("'\"")
+        result[key.strip()] = value if in_quote else value.strip().strip("'\"")
 
     for c in text:
         if c == "\"" and (not value or (value and value[-1] != '\\')):
@@ -24,11 +24,11 @@ def parse(text):
                 do_append = True
             else:
                 in_quote = True
-        elif c == "=":
+        elif c == "=" and in_key:
             in_key = False
         elif c == "\n" and key and not in_quote:
             do_append = True
-        elif in_quote or c not in [" ", "\n", "="]:
+        elif in_quote or c not in [" ", "\n"]:
             if in_key:
                 key += c
             else:
