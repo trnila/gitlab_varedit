@@ -15,7 +15,7 @@ def main():
     gl = gitlab.Gitlab.from_config()
 
     project = gl.projects.get(id=args.project_id)
-    before = {var.key: var.value for var in project.variables.list()}
+    before = {var.key: var.value for var in project.variables.list(all=True)}
 
     EDITOR = os.environ.get('EDITOR', 'vim')
     with tempfile.NamedTemporaryFile(suffix=".tmp") as tf:
